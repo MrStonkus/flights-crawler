@@ -8,12 +8,6 @@ website_html = response.text
 
 soup = BeautifulSoup(website_html, "html.parser")
 
-# flights to one way
-# fligthsFrom = soup.find_all(name="div", class_="fly5-flfrom")
-# resultTo = soup.find_all(name="div", class_="fly5-flto")
-
-# for airport in fligthsFrom:
-#     print(airport.getText().split(' ')[2])
 
 departFlights = soup.find_all(name="div", class_="fly5-flights fly5-depart th")
 print(departFlights.lenght)
