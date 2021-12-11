@@ -10,8 +10,7 @@ class Crawler:
             "html.parser"
         )
 
-    def getFlights(self, action):
-        # action can be 'depart' or 'return'
+    def getFlights(self, action):  # action can be only 'depart' or 'return'
         flights = []
         # extract only depart or return flights HTML by specifed html class name
         flightsHTML = self.soup.find(

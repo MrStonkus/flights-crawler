@@ -13,6 +13,12 @@ airportNames = {
     'WIL': 'nairobi',
     'EDL': 'eldoret'
 }
+timeZones = {
+    'NBO': 3,
+    'MBA': 3,
+    'WIL': 3,
+    'EDL': 3
+}
 
 # search data
 depAirportCode = 'NBO'  # depparting from airport code, you can change by airportNames
@@ -56,16 +62,31 @@ class Console:
         # print("Current Date: ", currDate.strftime(
         #     "%a %b %d %I:%M:%S GMT %Y"))
         for departday in departingDays:
+            # get flight search URL
             departDate = currDate + datetime.timedelta(days=departday)
             returnDate = departDate + datetime.timedelta(days=returnAfter)
             URL = urlGen.getURL(
                 depAirportCode, arrvAirportCode, departDate, returnDate)
+            # get flights data
+            crawler = Crawler(URL)
+            outboundData = crawler.getFlights('depart')
+            inboundData = crawler.getFlights('return')
+            # print(outboundData, inboundData)
 
-    # for URL in URLs:
-    #     crawler = Crawler(URL)
-    #     flightsD = crawler.getFlights('depart')
-    #     flightsR = crawler.getFlights('return')
-    #     print(flightsD, flightsR)
+            # get all round trip combinations
+            roundTripCombs = []
+            for outboundFlight in outboundData:
+                for inboundFlight in inboundData:
+                    roundTrip = []
+                    for item in outboundFlight[:-1]:
+                        roundTrip.append(item)
+                    for item in inboundFlight[:-1]:
+                        roundTrip.append(item)
+                    # add price
+                    roundTrip.append(outboundFlight[-1] + inboundFlight[-1])
+                    roundTripCombs.append(roundTrip)
+            for trip in roundTripCombs:
+                print(trip)
 
 
 # app start
