@@ -13,12 +13,6 @@ airportNames = {
     'WIL': 'nairobi',
     'EDL': 'eldoret'
 }
-# timeZones = {
-#     'NBO': 3,
-#     'MBA': 3,
-#     'WIL': 3,
-#     'EDL': 3
-# }
 
 # search data
 depAirportCode = 'NBO'  # depparting from airport code, you can change by airportNames
