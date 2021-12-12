@@ -49,14 +49,16 @@ class Console:
             else:
                 match menu_nr:
                     case 1:
-                        self.executeDataExtraction()
+                        # get flights data from website and write to csv file
+                        roundTripCombs = self.getRoundTripCombinationsData()
+                        self.writeToFile(roundTripCombs)
                     case 2:
                         # Quit
                         exit_out = True
                     case _:
                         print('Choose from 1 to 2!')
 
-    def executeDataExtraction(self):
+    def getRoundTripCombinationsData(self):
         currDate = datetime.datetime.now(datetime.timezone.utc)
         urlGen = URLGenerator(urlTemplate, airportNames)
         # print("Current Date: ", currDate.strftime(
@@ -77,6 +79,12 @@ class Console:
             roundTripCombs = []
             for outboundFlight in outboundData:
                 for inboundFlight in inboundData:
+                    # the year of flight do not shown in website, so we getting from depart and returning dates
+                    outboundYear = departDate.strftime("%Y")
+                    inboundYear = returnDate.strftime("%Y")
+
+                    print(outboundFlight)
+                    # TODO įvesti metus
                     roundTrip = []
                     for item in outboundFlight[:-1]:
                         roundTrip.append(item)
@@ -87,6 +95,10 @@ class Console:
                     roundTripCombs.append(roundTrip)
             for trip in roundTripCombs:
                 print(trip)
+                # TODO įrašyti į failą
+
+    def writeToFile(tripCombinations):
+        pass
 
 
 # app start
