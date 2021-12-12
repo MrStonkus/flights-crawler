@@ -2,7 +2,7 @@
 
 This console UI app is a web flight crawler written in python.
 
-The app, looks in www.fly540.com website and collect all cheapest round trip flight combinations from NBO (Nairobi) to MAB (Mombasa).
+The app, looks in www.fly540.com website and collect all cheapest round trip flight combinations from NBO (Nairobi) to MBA (Mombasa).
 
 Standard departure are 10 and 20 days from current date and returning 7 days after the departure date, but you can freely modify its in code.
 
