@@ -1,3 +1,4 @@
+import datetime
 import requests
 from bs4 import BeautifulSoup
 
@@ -32,19 +33,57 @@ class Crawler:
         return flightsHTML.find(class_=className).getText().split(' ')[2].replace('(', '').replace(')', '')
 
     def __getFlightDateStamp(self, flightHTML):
+        # get flight year
+        searchHeaderHTML = self.soup.find(
+            name="div", class_="row row-eq-heights")
+        tempDateArr = searchHeaderHTML.find(
+            name='div', class_='col-md-4 cl-2').getText().replace(',', '').split(' ')
+        flightYear = tempDateArr[5]
+        # TODO if departure in one year and arrive in another, there will be departuring year, need solution
+
+        # get depart - arrive dates
         dates = []
         flightDates = flightHTML.find_all(name='span', class_='fldate')
         for date in flightDates:
             dates.append(date.getText().replace(',', ' ').split(' '))
 
+        # get depart and arrive times of flight
         times = []
         flightTimes = flightHTML.find_all(name='span', class_='fltime ftop')
         for time in flightTimes:
             times.append(time.getText().replace(' ', ''))
 
-        departsDateStamp = f'{dates[0][1]} {dates[0][4]} {dates[0][2]} {times[0]}'
-        arrivesDateStamp = f'{dates[1][1]} {dates[1][4]} {dates[1][2]} {times[1]}'
-        return departsDateStamp, arrivesDateStamp
+        departDate = (f'{dates[0][2]} {dates[0][4]}')
+        departTime = times[0]
+
+        arriveDate = (f'{dates[1][2]} {dates[1][4]}')
+        arriveTime = times[1]
+
+        departDateTime = (f"{flightYear} {departDate} {departTime}")
+        returnDateTime = (f"{flightYear} {arriveDate} {arriveTime}")
+
+        # to modify date we need convert date string to datetime format
+        departDT = self.__strToDatetimeConvert(departDateTime)
+        returnDT = self.__strToDatetimeConvert(returnDateTime)
+        # convert time from local airport to UTC
+        departDT = self.__timeToUTC(departDT)
+        returnDT = self.__timeToUTC(returnDT)
+        # convert datetime to string
+        departDT = self.__convertDatetimeToString(departDT)
+        returnDT = self.__convertDatetimeToString(returnDT)
+
+        return departDT, returnDT
 
     def __getFlightPrice(self, flightHTML):
         return int(flightHTML.find(name='span', class_='flprice').getText())
+
+    def __strToDatetimeConvert(self, dateString):
+        return datetime.datetime.strptime(dateString, '%Y %d %b %I:%M%p')
+
+    def __timeToUTC(self, dateObj):
+        # airports time zone are +3, so we get back for 3 hours
+        dateObj = dateObj - datetime.timedelta(hours=3)
+        return dateObj.replace(tzinfo=datetime.timezone.utc)
+
+    def __convertDatetimeToString(self, datetimeString):
+        return datetimeString.strftime("%a %b %d %I:%M:%S GMT %Y")

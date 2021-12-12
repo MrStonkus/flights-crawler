@@ -1,4 +1,4 @@
-import datetime
+# import datetime
 from crawler import *
 from url_generator import *
 
@@ -13,12 +13,12 @@ airportNames = {
     'WIL': 'nairobi',
     'EDL': 'eldoret'
 }
-timeZones = {
-    'NBO': 3,
-    'MBA': 3,
-    'WIL': 3,
-    'EDL': 3
-}
+# timeZones = {
+#     'NBO': 3,
+#     'MBA': 3,
+#     'WIL': 3,
+#     'EDL': 3
+# }
 
 # search data
 depAirportCode = 'NBO'  # depparting from airport code, you can change by airportNames
@@ -79,12 +79,6 @@ class Console:
             roundTripCombs = []
             for outboundFlight in outboundData:
                 for inboundFlight in inboundData:
-                    # the year of flight do not shown in website, so we getting from depart and returning dates
-                    outboundYear = departDate.strftime("%Y")
-                    inboundYear = returnDate.strftime("%Y")
-
-                    # print(outboundFlight)
-                    # TODO įvesti metus
                     roundTrip = []
                     for item in outboundFlight[:-1]:
                         roundTrip.append(item)
