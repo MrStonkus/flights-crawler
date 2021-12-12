@@ -17,7 +17,7 @@ airportNames = {
 # search data
 depAirportCode = 'NBO'  # depparting from airport code, you can change by airportNames
 arrvAirportCode = 'MBA'  # destination airport code, you can change by airportNames
-departingDays = [10, 20]  # departing on dates after current date
+departingDays = [0, 10, 20]  # departing on dates after current date
 returnAfter = 7  # days
 
 

@@ -17,6 +17,7 @@ class Crawler:
         flightsHTML = self.soup.find(
             name="div", class_=f"fly5-flights fly5-{action} th")
         # get depart or return flights table
+        # TODO add exeption if flights not found
         flightsTableHTML = flightsHTML.find_all(name='table', class_='table')
         for flightHTML in flightsTableHTML:
             # get flightHTML details -> departAir, ArriveAir, deaprtDate, ArriveDate, flightPrice
