@@ -34,14 +34,12 @@ class Crawler:
 
     def __getFlightDateStamp(self, flightHTML):
         # get flight year
-        searchHeaderHTML = self.soup.find(
-            name="div", class_="row row-eq-heights")
-        tempDateArr = searchHeaderHTML.find(
-            name='div', class_='col-md-4 cl-2').getText().replace(',', '').split(' ')
+        searchHeaderHTML = self.soup.find(name="div", class_="row row-eq-heights")
+        tempDateArr = searchHeaderHTML.find(name='div', class_='col-md-4 cl-2').getText().replace(',', '').split(' ')
         flightYear = tempDateArr[5]
-        # TODO if departure in one year and arrive in another, there will be departuring year, need solution
+        # NOTE in this website such flights do not exist, but if departure would be in one year and arrive in another, result would be departuring year. Need solution in the future
 
-        # get depart - arrive dates
+        # get depart and arrive dates
         dates = []
         flightDates = flightHTML.find_all(name='span', class_='fldate')
         for date in flightDates:
