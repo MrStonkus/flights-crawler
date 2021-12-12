@@ -1,6 +1,6 @@
-# import datetime
 from crawler import *
 from url_generator import *
+import csv
 
 
 # search URL template
@@ -37,32 +37,35 @@ class Console:
                 
                 This app will  collect all cheapest round trip flight combinations from website www.fly540.com.
                 Flights from NBO (Nairobi) to MBA (Mombasa) departing 10 and 20 days from the current date and 
-                returning 7 days after the departure date. Data will be saved in CSV format. 
+                returning 7 days after the departure date. 
 
                 1. Execute data extraction
-                2. Quit
+                2. Write flights data to csv file
+                3. Quit
                 ''')
             try:
-                menu_nr = int(input('Enter menu number (1-2): '))
+                menu_nr = int(input('Enter menu number (1-3): '))
             except ValueError:
-                print('Choose from 1 to 2!')
+                print('Choose from 1 to 3!')
             else:
                 match menu_nr:
                     case 1:
                         # get flights data from website and write to csv file
                         roundTripCombs = self.getRoundTripCombinationsData()
-                        self.writeToFile(roundTripCombs)
                     case 2:
+                        # write crawled data to csv file
+                        self.writeToFile(roundTripCombs)
+                    case 3:
                         # Quit
                         exit_out = True
                     case _:
-                        print('Choose from 1 to 2!')
+                        print('Choose from 1 to 3!')
 
     def getRoundTripCombinationsData(self):
         currDate = datetime.datetime.now(datetime.timezone.utc)
         urlGen = URLGenerator(urlTemplate, airportNames)
-        # print("Current Date: ", currDate.strftime(
-        #     "%a %b %d %I:%M:%S GMT %Y"))
+        roundTripCombs = []
+
         for departday in departingDays:
             # get flight search URL
             departDate = currDate + datetime.timedelta(days=departday)
@@ -76,7 +79,6 @@ class Console:
             # print(outboundData, inboundData)
 
             # get all round trip combinations
-            roundTripCombs = []
             for outboundFlight in outboundData:
                 for inboundFlight in inboundData:
                     roundTrip = []
@@ -87,12 +89,24 @@ class Console:
                     # add price
                     roundTrip.append(outboundFlight[-1] + inboundFlight[-1])
                     roundTripCombs.append(roundTrip)
-            for trip in roundTripCombs:
-                print(trip)
-                # TODO įrašyti į failą
+
+        for trip in roundTripCombs:
+            # print data to console
+            print(trip)
+        return roundTripCombs
 
     def writeToFile(self, tripCombinations):
-        pass
+        header = ['outbound_departure_airport', 'outbound_arrival_airport', 'outbound_departure_time',	'outbound_arrival_time',
+                  'inbound_departure_airport',	'inbound_arrival_airport',	'inbound_departure_time',	'inbound_arrival_time',	'total_price',	'taxes']
+
+        with open('./exported_flights/flights.csv', 'w', encoding='UTF8', newline='') as f:
+            writer = csv.writer(f)
+
+            # write the header
+            writer.writerow(header)
+
+            # write multiple rows
+            writer.writerows(tripCombinations)
 
 
 # app start
