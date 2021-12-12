@@ -83,7 +83,7 @@ class Console:
                     outboundYear = departDate.strftime("%Y")
                     inboundYear = returnDate.strftime("%Y")
 
-                    print(outboundFlight)
+                    # print(outboundFlight)
                     # TODO įvesti metus
                     roundTrip = []
                     for item in outboundFlight[:-1]:
@@ -97,7 +97,7 @@ class Console:
                 print(trip)
                 # TODO įrašyti į failą
 
-    def writeToFile(tripCombinations):
+    def writeToFile(self, tripCombinations):
         pass
 
 

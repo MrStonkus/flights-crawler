@@ -46,5 +46,5 @@ class Crawler:
         arrivesDateStamp = f'{dates[1][1]} {dates[1][4]} {dates[1][2]} {times[1]}'
         return departsDateStamp, arrivesDateStamp
 
-    def __getFlightPrice(flightHTML):
+    def __getFlightPrice(self, flightHTML):
         return int(flightHTML.find(name='span', class_='flprice').getText())
