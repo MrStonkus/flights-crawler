@@ -18,7 +18,14 @@ class Crawler:
             name="div", class_=f"fly5-flights fly5-{action} th")
         # get depart or return flights table
         # TODO add exeption if flights not found
-        flightsTableHTML = flightsHTML.find_all(name='table', class_='table')
+
+        flightsTableHTML = ''
+        try:
+            flightsTableHTML = flightsHTML.find_all(
+                name='table', class_='table')
+        except:
+            print('Flight not found! Skipping...')
+
         for flightHTML in flightsTableHTML:
             # get flightHTML details -> departAir, ArriveAir, deaprtDate, ArriveDate, flightPrice
             outDepAirport = self.__getAirportCode(flightsHTML, "fly5-flfrom")

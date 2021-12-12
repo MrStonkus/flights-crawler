@@ -17,7 +17,7 @@ airportNames = {
 # search data
 depAirportCode = 'NBO'  # depparting from airport code, you can change by airportNames
 arrvAirportCode = 'MBA'  # destination airport code, you can change by airportNames
-departingDays = [0, 10, 20]  # departing on dates after current date
+departingDays = [10, 20]  # departing on dates after current date
 returnAfter = 7  # days
 
 
@@ -82,8 +82,13 @@ class Console:
                     roundTripCombs.append(roundTrip)
 
         # print data to console
-        for trip in roundTripCombs:
-            print(trip)
+        if roundTripCombs:
+            print(
+                f'Successfully! We found {len(roundTripCombs)} round trip flights:')
+            for trip in roundTripCombs:
+                print(trip)
+        else:
+            print('Sorry, we did not found any round trip flights')
 
         return roundTripCombs
 
