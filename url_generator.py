@@ -36,6 +36,6 @@ class URLGenerator:
         dateStr1 = arrivalDate.strftime("%a")
         dateStr2 = arrivalDate.strftime("%d+%b+%Y")
         replTo = ("date_to=" + dateStr1 + "%2C+" + dateStr2)
-        tempURL = tempURL.replace(replFrom, replTo)
+        finalURL = tempURL.replace(replFrom, replTo)
 
-        return tempURL
+        return finalURL

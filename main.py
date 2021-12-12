@@ -59,18 +59,17 @@ class Console:
         currDate = datetime.datetime.now(datetime.timezone.utc)
         urlGen = URLGenerator(urlTemplate, airportNames)
         roundTripCombs = []
-
         for departday in departingDays:
-            # get flight search URL
+            # get flight search URL from URL generator
             departDate = currDate + datetime.timedelta(days=departday)
             returnDate = departDate + datetime.timedelta(days=returnAfter)
             URL = urlGen.getURL(
                 depAirportCode, arrvAirportCode, departDate, returnDate)
-            # get flights data
+            # get flights data from wensite
             crawler = Crawler(URL)
             outboundData = crawler.getFlights('depart')
             inboundData = crawler.getFlights('return')
-            # get all round trip combinations
+            # mixing data to get all available round trip combinations
             for outboundFlight in outboundData:
                 for inboundFlight in inboundData:
                     roundTrip = []
@@ -82,9 +81,10 @@ class Console:
                     roundTrip.append(outboundFlight[-1] + inboundFlight[-1])
                     roundTripCombs.append(roundTrip)
 
+        # print data to console
         for trip in roundTripCombs:
-            # print data to console
             print(trip)
+
         return roundTripCombs
 
     def writeToFile(self, tripCombinations):
