@@ -27,6 +27,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 dev/
+homework_task/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
